@@ -1,0 +1,1 @@
+echo "register_write MyIngress.state_var1 0 1" | simple_switch_CLI
