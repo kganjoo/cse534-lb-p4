@@ -2,7 +2,7 @@
 import sys
 sys.path.append('/home/ubuntu/flask/lib/python3.8/site-packages')
 from flask import Flask, jsonify
-
+import time
 import multiprocessing
 
 app = Flask(__name__)
@@ -13,9 +13,9 @@ def calculate_primes(start, end):
         if all(num % i != 0 for i in range(2, int(num ** 0.5) + 1)):
             primes.append(num)
     return primes
-
-@app.route('/async')
-def hello():
+ 
+@app.route('/heavy-load')
+def heavy_load():
     # Divide the work among multiple processes (assuming 4 CPU cores)
     num_processes = 4
     limit = 1000000  # Adjust the limit for more CPU usage
@@ -28,6 +28,14 @@ def hello():
 
     primes = [prime for sublist in results for prime in sublist]
     return "Heavy task completed"
+
+
+@app.route('/light-load')
+def light_load():
+    # Divide the work among multiple processes (assuming 4 CPU cores)
+    time.sleep(2)
+    return "Light task completed"
+
 
 if __name__ == '__main__':
     app.run(host='192.168.2.10', port=80)
